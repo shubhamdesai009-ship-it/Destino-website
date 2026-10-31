@@ -31,3 +31,10 @@ Open `index.html` in a browser.
 
 ## Brand notes
 The website uses a dark navy, warm ivory and soft green palette with a calm, premium editorial style. The current copy positions Destino as a journey coordination service rather than claiming to be a transport operator or aggregator.
+
+
+## Contact options
+- Website enquiries are submitted through Formspree at `https://formspree.io/f/xpppjkev`.
+- The intended enquiry inbox and direct email contact are `shubham.desai009@gmail.com`.
+- The website includes a direct email link (`mailto:`) and a WhatsApp contact link for `+91 7709082055`.
+- Direct email links open the visitor's configured email app; the enquiry form continues to use Formspree.
