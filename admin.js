@@ -99,6 +99,45 @@ async function loadEnquiries() {
   renderEnquiries();
 }
 
+// Create WhatsApp contact button
+function createWhatsAppButton(item) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "WhatsApp";
+  button.className = "whatsapp-button";
+
+  button.addEventListener("click", () => {
+    const phone = String(item.phone || "").replace(/\D/g, "");
+
+    let whatsappNumber = phone;
+
+    if (phone.length === 10) {
+      whatsappNumber = "91" + phone;
+    } else if (phone.length === 12 && phone.startsWith("91")) {
+      whatsappNumber = phone;
+    } else {
+      alert("Invalid Indian mobile number. Please check the customer's phone number.");
+      return;
+    }
+
+    const customerName = item.customer_name || "Customer";
+    const serviceName = item.service || "your journey";
+
+    const message =
+      `Hello ${customerName}, thank you for contacting DESTINO. ` +
+      `We received your enquiry for ${serviceName}. ` +
+      `Our team would be happy to assist you.`;
+
+    const whatsappURL =
+      "https://wa.me/" + whatsappNumber +
+      "?text=" + encodeURIComponent(message);
+
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+  });
+
+  return button;
+}
+
 // Search and display enquiries
 function renderEnquiries() {
   const searchTerm = (searchInput?.value || "")
@@ -130,7 +169,7 @@ function renderEnquiries() {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
 
-    cell.colSpan = 7;
+    cell.colSpan = 8;
     cell.textContent = "No matching enquiries found.";
     row.appendChild(cell);
     enquiriesTable.appendChild(row);
@@ -206,6 +245,11 @@ function renderEnquiries() {
 
     statusCell.appendChild(statusSelect);
     row.appendChild(statusCell);
+
+    // WhatsApp contact column
+    const whatsappCell = document.createElement("td");
+    whatsappCell.appendChild(createWhatsAppButton(item));
+    row.appendChild(whatsappCell);
 
     enquiriesTable.appendChild(row);
   });
