@@ -1,7 +1,6 @@
 
 // DESTINO Supabase connection
 const SUPABASE_URL = "https://mxaragmabvmplinhvxae.supabase.co";
-
 const SUPABASE_KEY = "sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixRr7jz0";
 
 const supabaseClient = window.supabase.createClient(
@@ -15,6 +14,14 @@ const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 const logoutButton = document.getElementById("logoutButton");
 
+const STATUS_OPTIONS = [
+  "New",
+  "Pending",
+  "Confirmed",
+  "Completed",
+  "Cancelled"
+];
+
 // Admin login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -24,7 +31,7 @@ loginForm.addEventListener("submit", async (event) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
+  const { error } = await supabaseClient.auth.signInWithPassword({
     email,
     password
   });
@@ -100,8 +107,7 @@ async function loadEnquiries() {
       item.customer_name || "-",
       item.phone || "-",
       item.service || "-",
-      item.journey_date || "-",
-      item.status || "New"
+      item.journey_date || "-"
     ];
 
     values.forEach(value => {
@@ -109,6 +115,52 @@ async function loadEnquiries() {
       cell.textContent = value;
       row.appendChild(cell);
     });
+
+    // Editable status dropdown
+    const statusCell = document.createElement("td");
+    const statusSelect = document.createElement("select");
+
+    STATUS_OPTIONS.forEach(status => {
+      const option = document.createElement("option");
+      option.value = status;
+      option.textContent = status;
+      statusSelect.appendChild(option);
+    });
+
+    const currentStatus = STATUS_OPTIONS.includes(item.status)
+      ? item.status
+      : "New";
+
+    statusSelect.value = currentStatus;
+    statusSelect.setAttribute("aria-label",
+      `Change status for ${item.customer_name || "enquiry"}`
+    );
+
+    statusSelect.addEventListener("change", async () => {
+      const newStatus = statusSelect.value;
+
+      statusSelect.disabled = true;
+      dataMessage.textContent = "Updating enquiry status...";
+
+      const { error } = await supabaseClient
+        .from("enquiries")
+        .update({ status: newStatus })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not update status: " + error.message);
+        statusSelect.value = currentStatus;
+        statusSelect.disabled = false;
+        dataMessage.textContent = "Status update failed.";
+        return;
+      }
+
+      await loadEnquiries();
+      dataMessage.textContent = "Enquiry status updated successfully.";
+    });
+
+    statusCell.appendChild(statusSelect);
+    row.appendChild(statusCell);
 
     table.appendChild(row);
   });
