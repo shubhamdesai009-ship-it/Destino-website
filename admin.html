@@ -80,11 +80,10 @@
           <input
             type="search"
             id="enquirySearch"
-            placeholder="Search by name, phone, email or service..."
+            placeholder="Search by booking ID, name, phone, email or service..."
           >
         </div>
 
-        <!-- Export customer enquiries -->
         <div class="export-area">
           <button type="button" id="exportButton">
             Download Excel Report
@@ -95,6 +94,7 @@
           <table>
             <thead>
               <tr>
+                <th>Booking ID</th>
                 <th>Customer</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -105,6 +105,7 @@
                 <th>Contact</th>
               </tr>
             </thead>
+
             <tbody id="enquiriesTable"></tbody>
           </table>
         </div>
