@@ -170,3 +170,145 @@ journeyForm?.addEventListener('submit', async event => {
     submitButton.removeAttribute('aria-busy');
   }
 });
+
+/* =========================================================
+   DESTINO — SCROLL-DRIVEN 3D MOTION
+   Add below the existing script.js code
+   ========================================================= */
+
+(() => {
+  const initDestinoMotion = () => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    if (reduceMotion) return;
+
+    /* Add decorative depth orbs */
+    document.querySelectorAll(
+      ".hero, .dark-section, .partner-section"
+    ).forEach(section => {
+      if (!section.querySelector(".scroll-orb")) {
+        const orb = document.createElement("div");
+        orb.className = "scroll-orb";
+        orb.setAttribute("aria-hidden", "true");
+        section.appendChild(orb);
+      }
+    });
+
+    /* Elements that reveal as visitors scroll */
+    const revealElements = document.querySelectorAll(
+      ".service-card, .step, .difference-art, " +
+      ".difference-copy, .contact-form, " +
+      ".partner-list > div, .section-heading, .contact-copy"
+    );
+
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("destino-reveal", "is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      revealElements.forEach(element => {
+        element.classList.add("destino-reveal");
+        revealObserver.observe(element);
+      });
+    }
+
+    /* Scroll-driven 3D depth */
+    const hero = document.querySelector(".hero-visual");
+    const art = document.querySelector(".difference-art");
+    const cards = [...document.querySelectorAll(".service-card")];
+    const steps = [...document.querySelectorAll(".step")];
+    const form = document.querySelector(".contact-form");
+    const partnerRows = [...document.querySelectorAll(".partner-list > div")];
+    const orbs = [...document.querySelectorAll(".scroll-orb")];
+
+    let ticking = false;
+
+    const updateMotion = () => {
+      const height = window.innerHeight;
+
+      const progressFor = element => {
+        const rect = element.getBoundingClientRect();
+        const center = rect.top + rect.height / 2;
+        return Math.max(-1, Math.min(1, (center - height / 2) / (height / 2)));
+      };
+
+      if (hero) {
+        const p = progressFor(hero);
+        hero.style.setProperty("--hero-depth", `${-p * 18}px`);
+        hero.style.setProperty("--hero-tilt", `${p * 2.5}deg`);
+      }
+
+      if (art) {
+        const p = progressFor(art);
+        art.style.setProperty("--art-depth", `${-p * 16}px`);
+        art.style.setProperty("--art-rotate", `${p * 3}deg`);
+        art.style.setProperty("--art-tilt", `${-p * 2}deg`);
+      }
+
+      cards.forEach((card, index) => {
+        const p = progressFor(card);
+        const stagger = index % 2 === 0 ? 1 : -1;
+        card.style.setProperty("--scroll-lift", `${-p * 12}px`);
+        card.style.setProperty("--scroll-tilt", `${p * stagger * 1.3}deg`);
+      });
+
+      steps.forEach((step, index) => {
+        const p = progressFor(step);
+        step.style.setProperty("--step-depth", `${-p * (7 + index * 2)}px`);
+      });
+
+      if (form) {
+        const p = progressFor(form);
+        form.style.setProperty("--form-depth", `${-p * 13}px`);
+        form.style.setProperty("--form-tilt", `${p * 1.2}deg`);
+      }
+
+      partnerRows.forEach(row => {
+        const p = progressFor(row);
+        row.style.setProperty("--partner-depth", `${-p * 8}px`);
+      });
+
+      orbs.forEach((orb, index) => {
+        const section = orb.parentElement;
+        const p = progressFor(section);
+        const direction = index % 2 === 0 ? 1 : -1;
+        orb.style.setProperty("--orb-y", `${p * direction * 55}px`);
+      });
+
+      ticking = false;
+    };
+
+    const requestMotionUpdate = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(updateMotion);
+      }
+    };
+
+    window.addEventListener("scroll", requestMotionUpdate, {
+      passive: true
+    });
+
+    window.addEventListener("resize", requestMotionUpdate);
+
+    updateMotion();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDestinoMotion, {
+      once: true
+    });
+  } else {
+    initDestinoMotion();
+  }
+})();
