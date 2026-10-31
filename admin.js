@@ -13,6 +13,9 @@ const dashboardSection = document.getElementById("dashboardSection");
 const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 const logoutButton = document.getElementById("logoutButton");
+const searchInput = document.getElementById("enquirySearch");
+const enquiriesTable = document.getElementById("enquiriesTable");
+const dataMessage = document.getElementById("dataMessage");
 
 const STATUS_OPTIONS = [
   "New",
@@ -22,10 +25,11 @@ const STATUS_OPTIONS = [
   "Cancelled"
 ];
 
+let allEnquiries = [];
+
 // Admin login
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-
   loginMessage.textContent = "Signing in...";
 
   const email = document.getElementById("email").value.trim();
@@ -61,13 +65,10 @@ async function showDashboard() {
   await loadEnquiries();
 }
 
-// Load customer enquiries
+// Load enquiries from Supabase
 async function loadEnquiries() {
-  const dataMessage = document.getElementById("dataMessage");
-  const table = document.getElementById("enquiriesTable");
-
   dataMessage.textContent = "Loading enquiries...";
-  table.replaceChildren();
+  enquiriesTable.replaceChildren();
 
   const { data, error } = await supabaseClient
     .from("enquiries")
@@ -75,39 +76,81 @@ async function loadEnquiries() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    dataMessage.textContent = "Unable to load enquiries: " + error.message;
+    dataMessage.textContent =
+      "Unable to load enquiries: " + error.message;
     return;
   }
 
-  const enquiries = data || [];
+  allEnquiries = data || [];
 
+  // Update dashboard statistics
   document.getElementById("totalEnquiries").textContent =
-    enquiries.length;
+    allEnquiries.length;
 
   document.getElementById("newEnquiries").textContent =
-    enquiries.filter(item => item.status === "New").length;
+    allEnquiries.filter(item => item.status === "New").length;
 
   document.getElementById("confirmedEnquiries").textContent =
-    enquiries.filter(item => item.status === "Confirmed").length;
+    allEnquiries.filter(item => item.status === "Confirmed").length;
 
   document.getElementById("completedEnquiries").textContent =
-    enquiries.filter(item => item.status === "Completed").length;
+    allEnquiries.filter(item => item.status === "Completed").length;
 
-  if (enquiries.length === 0) {
+  renderEnquiries();
+}
+
+// Search and display enquiries
+function renderEnquiries() {
+  const searchTerm = (searchInput?.value || "")
+    .trim()
+    .toLowerCase();
+
+  const filteredEnquiries = allEnquiries.filter(item => {
+    const searchableText = [
+      item.customer_name,
+      item.phone,
+      item.email,
+      item.service
+    ].join(" ").toLowerCase();
+
+    return searchableText.includes(searchTerm);
+  });
+
+  enquiriesTable.replaceChildren();
+
+  if (allEnquiries.length === 0) {
     dataMessage.textContent = "No customer enquiries found yet.";
     return;
   }
 
-  dataMessage.textContent = `${enquiries.length} customer enquiries found.`;
+  dataMessage.textContent =
+    `Showing ${filteredEnquiries.length} of ${allEnquiries.length} enquiries.`;
 
-  enquiries.forEach(item => {
+  if (filteredEnquiries.length === 0) {
     const row = document.createElement("tr");
+    const cell = document.createElement("td");
+
+    cell.colSpan = 7;
+    cell.textContent = "No matching enquiries found.";
+    row.appendChild(cell);
+    enquiriesTable.appendChild(row);
+    return;
+  }
+
+  filteredEnquiries.forEach(item => {
+    const row = document.createElement("tr");
+
+    const receivedDate = item.created_at
+      ? new Date(item.created_at).toLocaleString("en-IN")
+      : "-";
 
     const values = [
       item.customer_name || "-",
       item.phone || "-",
+      item.email || "-",
       item.service || "-",
-      item.journey_date || "-"
+      item.journey_date || "-",
+      receivedDate
     ];
 
     values.forEach(value => {
@@ -116,7 +159,7 @@ async function loadEnquiries() {
       row.appendChild(cell);
     });
 
-    // Editable status dropdown
+    // Editable enquiry status
     const statusCell = document.createElement("td");
     const statusSelect = document.createElement("select");
 
@@ -132,7 +175,8 @@ async function loadEnquiries() {
       : "New";
 
     statusSelect.value = currentStatus;
-    statusSelect.setAttribute("aria-label",
+    statusSelect.setAttribute(
+      "aria-label",
       `Change status for ${item.customer_name || "enquiry"}`
     );
 
@@ -156,15 +200,19 @@ async function loadEnquiries() {
       }
 
       await loadEnquiries();
-      dataMessage.textContent = "Enquiry status updated successfully.";
+      dataMessage.textContent =
+        "Enquiry status updated successfully.";
     });
 
     statusCell.appendChild(statusSelect);
     row.appendChild(statusCell);
 
-    table.appendChild(row);
+    enquiriesTable.appendChild(row);
   });
 }
+
+// Search as the admin types
+searchInput?.addEventListener("input", renderEnquiries);
 
 // Logout
 logoutButton.addEventListener("click", async () => {
@@ -175,6 +223,7 @@ logoutButton.addEventListener("click", async () => {
     return;
   }
 
+  allEnquiries = [];
   dashboardSection.hidden = true;
   loginSection.hidden = false;
   loginForm.reset();
