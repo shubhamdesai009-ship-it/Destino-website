@@ -18,31 +18,33 @@ document.querySelectorAll('[data-service]').forEach(link => {
   });
 });
 
-document.getElementById('journeyForm')?.addEventListener('submit', event => {
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xpppjkev';
+
+document.getElementById('journeyForm')?.addEventListener('submit', async event => {
   event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  const subject = encodeURIComponent(`Destion enquiry — ${data.get('service')}`);
-  const body = encodeURIComponent(
-`Hello Destion,
-
-I would like to enquire about a journey.
-
-Name: ${data.get('name')}
-Phone: ${data.get('phone')}
-Email: ${data.get('email') || 'Not provided'}
-Service: ${data.get('service')}
-
-Requirement:
-${data.get('message') || 'I would like to discuss the details.'}
-
-Please contact me to discuss availability and next steps.`
-  );
-  // Replace this placeholder with the verified business inbox before publishing.
-  const businessEmail = 'YOUR_EMAIL_ADDRESS';
+  const form = event.currentTarget;
   const status = document.getElementById('formStatus');
-  if (businessEmail === 'YOUR_EMAIL_ADDRESS') {
-    status.textContent = 'Before publishing, replace YOUR_EMAIL_ADDRESS in script.js with your business email. Your enquiry details are ready to be sent.';
-    return;
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  const formData = new FormData(form);
+  formData.set('_subject', `New Destion enquiry — ${formData.get('service')}`);
+  if (formData.get('email')) formData.set('_replyto', formData.get('email'));
+
+  submitButton.disabled = true;
+  status.textContent = 'Sending your enquiry…';
+
+  try {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method: 'POST',
+      body: formData,
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) throw new Error('Form submission failed');
+    form.reset();
+    status.textContent = 'Thank you! Your enquiry has been sent. We will contact you soon.';
+  } catch (error) {
+    status.textContent = 'Sorry, your enquiry could not be sent. Please email shubham.desai009@gmail.com directly.';
+  } finally {
+    submitButton.disabled = false;
   }
-  window.location.href = `mailto:${businessEmail}?subject=${subject}&body=${body}`;
 });

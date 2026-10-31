@@ -141,17 +141,18 @@
     <section class="section contact-section" id="contact">
       <div class="container contact-grid">
         <div class="contact-copy"><div class="eyebrow dark"><span class="eyebrow-dot"></span> LET'S PLAN THE NEXT STEP</div><h2>Where can we<br>help you <em>get to?</em></h2><p>Share a few details and the Destion team can follow up to understand your requirements and discuss availability.</p>
-          <div class="contact-detail"><span>✉</span><div><small>EMAIL</small><b>Replace with your business email</b></div></div>
+          <div class="contact-detail"><span>✉</span><div><small>EMAIL</small><b><a href="mailto:shubham.desai009@gmail.com">shubham.desai009@gmail.com</a></b></div></div>
           <div class="contact-detail"><span>⌖</span><div><small>INITIAL SERVICE AREA</small><b>Pune, Maharashtra, India</b></div></div>
         </div>
         <form class="contact-form" id="journeyForm">
+          <input type="hidden" name="_subject" value="New Destion website enquiry">
           <div class="form-top"><span>JOURNEY ENQUIRY</span><span>01 — 04</span></div>
           <label for="name">Your name</label><input id="name" name="name" placeholder="Enter your name" required>
           <div class="form-row"><div><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" placeholder="+91" required></div><div><label for="email">Email (optional)</label><input id="email" name="email" type="email" placeholder="you@example.com"></div></div>
           <label for="service">What do you need?</label><select id="service" name="service" required><option value="">Select a service</option><option>Hospital & patient journey</option><option>Corporate travel</option><option>Event or concert transport</option><option>Pet-care journey</option><option>Partnership enquiry</option><option>Other</option></select>
           <label for="message">A little about your requirement</label><textarea id="message" name="message" rows="4" placeholder="Date, pickup area, destination and any support needed..."></textarea>
-          <button class="button button-primary submit-button" type="submit">Prepare enquiry <span>↗</span></button>
-          <p class="form-note">This demo form opens your email app with the enquiry details. It does not submit or store personal information on a server.</p>
+          <button class="button button-primary submit-button" type="submit">Send enquiry <span>↗</span></button>
+          <p class="form-note">Your enquiry will be sent securely through Formspree to the Destion inbox. Please do not include sensitive personal or medical information.</p>
           <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
         </form>
       </div>
