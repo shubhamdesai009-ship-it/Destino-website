@@ -50,7 +50,6 @@ nav?.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', closeNavigation);
 });
 
-// Close navigation using Escape
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
     closeNavigation();
@@ -99,10 +98,8 @@ journeyForm?.addEventListener('submit', async event => {
 
   if (!status || !submitButton) return;
 
-  // Prevent duplicate submissions
   if (submitButton.disabled) return;
 
-  // Check Supabase connection
   if (!supabaseClient) {
     status.textContent =
       'Our enquiry service is temporarily unavailable. Please contact us on WhatsApp.';
@@ -122,7 +119,6 @@ journeyForm?.addEventListener('submit', async event => {
     status: 'New'
   };
 
-  // Required field validation
   if (
     !enquiry.customer_name ||
     !enquiry.phone ||
@@ -140,7 +136,6 @@ journeyForm?.addEventListener('submit', async event => {
   status.style.color = '';
 
   try {
-    // Insert enquiry into the existing Supabase table
     const { error } = await supabaseClient
       .from('enquiries')
       .insert([enquiry]);
@@ -149,7 +144,6 @@ journeyForm?.addEventListener('submit', async event => {
       throw error;
     }
 
-    // Successful submission
     form.reset();
 
     status.textContent =
@@ -179,38 +173,36 @@ journeyForm?.addEventListener('submit', async event => {
 (() => {
   const initDestinoMotion = () => {
     const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      '(prefers-reduced-motion: reduce)'
     ).matches;
 
     if (reduceMotion) return;
 
-    // Add decorative depth orbs
     document.querySelectorAll(
-      ".hero, .dark-section, .partner-section"
+      '.hero, .dark-section, .partner-section'
     ).forEach(section => {
-      if (!section.querySelector(".scroll-orb")) {
-        const orb = document.createElement("div");
-        orb.className = "scroll-orb";
-        orb.setAttribute("aria-hidden", "true");
+      if (!section.querySelector('.scroll-orb')) {
+        const orb = document.createElement('div');
+        orb.className = 'scroll-orb';
+        orb.setAttribute('aria-hidden', 'true');
         section.appendChild(orb);
       }
     });
 
-    // Elements that reveal as visitors scroll
     const revealElements = document.querySelectorAll(
-      ".service-card, .step, .difference-art, " +
-      ".difference-copy, .contact-form, " +
-      ".partner-list > div, .section-heading, .contact-copy"
+      '.service-card, .step, .difference-art, ' +
+      '.difference-copy, .contact-form, ' +
+      '.partner-list > div, .section-heading, .contact-copy'
     );
 
-    if ("IntersectionObserver" in window) {
+    if ('IntersectionObserver' in window) {
       const revealObserver = new IntersectionObserver(
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add(
-                "destino-reveal",
-                "is-visible"
+                'destino-reveal',
+                'is-visible'
               );
               revealObserver.unobserve(entry.target);
             }
@@ -220,21 +212,22 @@ journeyForm?.addEventListener('submit', async event => {
       );
 
       revealElements.forEach(element => {
-        element.classList.add("destino-reveal");
+        element.classList.add('destino-reveal');
         revealObserver.observe(element);
       });
     }
 
-    // Scroll-driven 3D depth
-    const hero = document.querySelector(".hero-visual");
-    const art = document.querySelector(".difference-art");
-    const cards = [...document.querySelectorAll(".service-card")];
-    const steps = [...document.querySelectorAll(".step")];
-    const form = document.querySelector(".contact-form");
+    const hero = document.querySelector('.hero-visual');
+    const art = document.querySelector('.difference-art');
+    const cards = [...document.querySelectorAll('.service-card')];
+    const steps = [...document.querySelectorAll('.step')];
+    const form = document.querySelector('.contact-form');
+
     const partnerRows = [
-      ...document.querySelectorAll(".partner-list > div")
+      ...document.querySelectorAll('.partner-list > div')
     ];
-    const orbs = [...document.querySelectorAll(".scroll-orb")];
+
+    const orbs = [...document.querySelectorAll('.scroll-orb')];
 
     let ticking = false;
 
@@ -253,28 +246,24 @@ journeyForm?.addEventListener('submit', async event => {
 
       if (hero) {
         const p = progressFor(hero);
-        hero.style.setProperty("--hero-depth", `${-p * 18}px`);
-        hero.style.setProperty("--hero-tilt", `${p * 2.5}deg`);
+        hero.style.setProperty('--hero-depth', `${-p * 18}px`);
+        hero.style.setProperty('--hero-tilt', `${p * 2.5}deg`);
       }
 
       if (art) {
         const p = progressFor(art);
-        art.style.setProperty("--art-depth", `${-p * 16}px`);
-        art.style.setProperty("--art-rotate", `${p * 3}deg`);
-        art.style.setProperty("--art-tilt", `${-p * 2}deg`);
+        art.style.setProperty('--art-depth', `${-p * 16}px`);
+        art.style.setProperty('--art-rotate', `${p * 3}deg`);
+        art.style.setProperty('--art-tilt', `${-p * 2}deg`);
       }
 
       cards.forEach((card, index) => {
         const p = progressFor(card);
         const stagger = index % 2 === 0 ? 1 : -1;
 
+        card.style.setProperty('--scroll-lift', `${-p * 12}px`);
         card.style.setProperty(
-          "--scroll-lift",
-          `${-p * 12}px`
-        );
-
-        card.style.setProperty(
-          "--scroll-tilt",
+          '--scroll-tilt',
           `${p * stagger * 1.3}deg`
         );
       });
@@ -283,24 +272,21 @@ journeyForm?.addEventListener('submit', async event => {
         const p = progressFor(step);
 
         step.style.setProperty(
-          "--step-depth",
+          '--step-depth',
           `${-p * (7 + index * 2)}px`
         );
       });
 
       if (form) {
         const p = progressFor(form);
-        form.style.setProperty("--form-depth", `${-p * 13}px`);
-        form.style.setProperty("--form-tilt", `${p * 1.2}deg`);
+        form.style.setProperty('--form-depth', `${-p * 13}px`);
+        form.style.setProperty('--form-tilt', `${p * 1.2}deg`);
       }
 
       partnerRows.forEach(row => {
         const p = progressFor(row);
 
-        row.style.setProperty(
-          "--partner-depth",
-          `${-p * 8}px`
-        );
+        row.style.setProperty('--partner-depth', `${-p * 8}px`);
       });
 
       orbs.forEach((orb, index) => {
@@ -309,7 +295,7 @@ journeyForm?.addEventListener('submit', async event => {
         const direction = index % 2 === 0 ? 1 : -1;
 
         orb.style.setProperty(
-          "--orb-y",
+          '--orb-y',
           `${p * direction * 55}px`
         );
       });
@@ -325,19 +311,19 @@ journeyForm?.addEventListener('submit', async event => {
     };
 
     window.addEventListener(
-      "scroll",
+      'scroll',
       requestMotionUpdate,
       { passive: true }
     );
 
-    window.addEventListener("resize", requestMotionUpdate);
+    window.addEventListener('resize', requestMotionUpdate);
 
     updateMotion();
   };
 
-  if (document.readyState === "loading") {
+  if (document.readyState === 'loading') {
     document.addEventListener(
-      "DOMContentLoaded",
+      'DOMContentLoaded',
       initDestinoMotion,
       { once: true }
     );
@@ -355,43 +341,43 @@ journeyForm?.addEventListener('submit', async event => {
   const startCinematicTransitions = () => {
     if (
       window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
+        '(prefers-reduced-motion: reduce)'
       ).matches
     ) {
       return;
     }
 
     const selectors = [
-      ".hero",
-      ".trust-strip",
-      ".section",
-      ".dark-section",
-      ".partner-section",
-      ".footer"
+      '.hero',
+      '.trust-strip',
+      '.section',
+      '.dark-section',
+      '.partner-section',
+      '.footer'
     ];
 
     const panels = [
-      ...document.querySelectorAll(selectors.join(","))
+      ...document.querySelectorAll(selectors.join(','))
     ];
 
     if (
       !panels.length ||
-      !("IntersectionObserver" in window)
+      !('IntersectionObserver' in window)
     ) {
       return;
     }
 
     panels.forEach(panel => {
       panel.classList.add(
-        "cinematic-panel",
-        "cinema-before"
+        'cinematic-panel',
+        'cinema-before'
       );
 
-      if (!panel.querySelector(":scope > .cinema-light")) {
-        const light = document.createElement("div");
+      if (!panel.querySelector(':scope > .cinema-light')) {
+        const light = document.createElement('div');
 
-        light.className = "cinema-light";
-        light.setAttribute("aria-hidden", "true");
+        light.className = 'cinema-light';
+        light.setAttribute('aria-hidden', 'true');
 
         panel.appendChild(light);
       }
@@ -404,14 +390,14 @@ journeyForm?.addEventListener('submit', async event => {
 
           const panel = entry.target;
 
-          panel.classList.remove("cinema-before");
+          panel.classList.remove('cinema-before');
           panel.classList.add(
-            "cinema-visible",
-            "cinema-sweep"
+            'cinema-visible',
+            'cinema-sweep'
           );
 
           window.setTimeout(() => {
-            panel.classList.remove("cinema-sweep");
+            panel.classList.remove('cinema-sweep');
           }, 1400);
 
           observer.unobserve(panel);
@@ -419,20 +405,150 @@ journeyForm?.addEventListener('submit', async event => {
       },
       {
         threshold: 0.12,
-        rootMargin: "0px 0px -8% 0px"
+        rootMargin: '0px 0px -8% 0px'
       }
     );
 
     panels.forEach(panel => observer.observe(panel));
   };
 
-  if (document.readyState === "loading") {
+  if (document.readyState === 'loading') {
     document.addEventListener(
-      "DOMContentLoaded",
+      'DOMContentLoaded',
       startCinematicTransitions,
       { once: true }
     );
   } else {
     startCinematicTransitions();
+  }
+})();
+
+
+// ==========================================
+// DESTINO — PINNED 3D CINEMATIC SHOWCASE
+// ==========================================
+
+(() => {
+  const initPinnedShowcase = () => {
+    const showcase = document.getElementById('destinoShowcase');
+
+    if (!showcase) {
+      console.info('DESTINO: Pinned showcase not found.');
+      return;
+    }
+
+    const scenes = [
+      ...showcase.querySelectorAll('.showcase-scene')
+    ];
+
+    const currentCounter = document.getElementById('showcaseCurrent');
+    const progressBar = document.getElementById('showcaseProgress');
+
+    if (!scenes.length) return;
+
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    // Keep all scenes accessible when reduced motion is enabled.
+    if (reduceMotion) {
+      scenes.forEach(scene => {
+        scene.classList.add('active');
+        scene.removeAttribute('aria-hidden');
+      });
+      return;
+    }
+
+    let ticking = false;
+    let activeIndex = -1;
+
+    const clamp = (value, min, max) => {
+      return Math.min(max, Math.max(min, value));
+    };
+
+    const updateShowcase = () => {
+      const rect = showcase.getBoundingClientRect();
+
+      // Calculate progress through the complete pinned section.
+      const scrollableDistance = Math.max(
+        1,
+        showcase.offsetHeight - window.innerHeight
+      );
+
+      const progress = clamp(
+        -rect.top / scrollableDistance,
+        0,
+        0.9999
+      );
+
+      const nextIndex = Math.min(
+        scenes.length - 1,
+        Math.floor(progress * scenes.length)
+      );
+
+      if (nextIndex !== activeIndex) {
+        activeIndex = nextIndex;
+
+        scenes.forEach((scene, index) => {
+          const isActive = index === activeIndex;
+
+          scene.classList.toggle('active', isActive);
+          scene.setAttribute(
+            'aria-hidden',
+            String(!isActive)
+          );
+        });
+
+        if (currentCounter) {
+          currentCounter.textContent = String(
+            activeIndex + 1
+          ).padStart(2, '0');
+        }
+      }
+
+      if (progressBar) {
+        progressBar.style.width = `${progress * 100}%`;
+      }
+
+      ticking = false;
+    };
+
+    const requestShowcaseUpdate = () => {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(updateShowcase);
+      }
+    };
+
+    window.addEventListener(
+      'scroll',
+      requestShowcaseUpdate,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      'resize',
+      requestShowcaseUpdate
+    );
+
+    // Set the correct scene on initial page load.
+    updateShowcase();
+
+    // Recalculate after images, fonts and layout have loaded.
+    window.addEventListener(
+      'load',
+      requestShowcaseUpdate,
+      { once: true }
+    );
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener(
+      'DOMContentLoaded',
+      initPinnedShowcase,
+      { once: true }
+    );
+  } else {
+    initPinnedShowcase();
   }
 })();
