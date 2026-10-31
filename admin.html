@@ -4,93 +4,264 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DESTINO | Admin Dashboard</title>
+  <meta name="theme-color" content="#091522">
+  <meta name="description" content="DESTINO administration and customer enquiry management.">
+
+  <title>DESTINO | Administration</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="admin.css">
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="admin.js" defer></script>
 </head>
-<body>
 
+<body class="admin-body">
+
+  <!-- ADMIN LOGIN -->
   <div class="login-container" id="loginSection">
-    <div class="login-card">
-      <h1>DESTINO</h1>
-      <p>Admin Dashboard</p>
 
-      <form id="loginForm">
-        <label for="email">Email Address</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter admin email"
-          required
-        >
+    <div class="login-decoration">
+      <div class="login-orbit login-orbit-one"></div>
+      <div class="login-orbit login-orbit-two"></div>
 
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter password"
-          required
-        >
+      <div class="login-brand">
+        <span class="brand-mark">V</span>
+        <span>DESTINO</span>
+      </div>
 
-        <button type="submit">Login</button>
-        <p id="loginMessage"></p>
-      </form>
+      <div class="login-message">
+        <span class="admin-eyebrow">THE DESTINO EXPERIENCE</span>
+
+        <h2>
+          Every journey<br>
+          deserves <em>care.</em>
+        </h2>
+
+        <p>
+          One place to manage enquiries, coordinate journeys
+          and keep every detail moving.
+        </p>
+
+        <div class="login-decoration-line"></div>
+        <span class="login-footer-note">DESTINO · ADMINISTRATION PORTAL</span>
+      </div>
     </div>
+
+    <div class="login-panel">
+      <div class="login-card">
+
+        <div class="login-mobile-brand">
+          <span class="brand-mark">V</span>
+          <span>DESTINO</span>
+        </div>
+
+        <div class="login-heading">
+          <span class="admin-eyebrow">SECURE ACCESS</span>
+          <h1>Welcome <em>back.</em></h1>
+          <p>Sign in to access your administration dashboard.</p>
+        </div>
+
+        <form id="loginForm">
+
+          <label for="email">Email address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter admin email"
+            autocomplete="username"
+            required
+          >
+
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button type="submit" class="login-submit">
+            Access dashboard <span>↗</span>
+          </button>
+
+          <p id="loginMessage" role="status" aria-live="polite"></p>
+
+        </form>
+
+        <div class="login-security">
+          <span>✦</span>
+          <span>Authorised DESTINO administrators only</span>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
+
+  <!-- ADMIN DASHBOARD -->
   <div id="dashboardSection" hidden>
+
+    <!-- TOP NAVIGATION -->
     <header class="topbar">
-      <h2>DESTINO Admin</h2>
-      <button id="logoutButton">Logout</button>
+
+      <a href="#" class="admin-brand" aria-label="Destino administration">
+        <span class="brand-mark">V</span>
+        <span>DESTINO</span>
+        <small>ADMIN</small>
+      </a>
+
+      <div class="topbar-right">
+        <div class="admin-profile">
+          <span class="profile-indicator"></span>
+          <span>Administrator</span>
+        </div>
+
+        <button id="logoutButton" type="button">
+          Logout <span>↗</span>
+        </button>
+      </div>
+
     </header>
 
+
+    <!-- MAIN DASHBOARD -->
     <main class="dashboard">
-      <h1>Dashboard Overview</h1>
-      <p>Manage your customer enquiries and bookings.</p>
 
-      <section class="stats">
-        <div class="stat-card">
-          <h3>Total Enquiries</h3>
-          <p id="totalEnquiries">0</p>
+      <!-- PAGE INTRODUCTION -->
+      <section class="dashboard-intro">
+
+        <div>
+          <span class="admin-eyebrow">OVERVIEW / MANAGEMENT</span>
+
+          <h1>
+            Your dashboard<span>.</span>
+          </h1>
+
+          <p>
+            Manage customer enquiries, monitor bookings
+            and coordinate every journey.
+          </p>
         </div>
 
-        <div class="stat-card">
-          <h3>New Enquiries</h3>
-          <p id="newEnquiries">0</p>
+        <div class="dashboard-date">
+          <span class="date-symbol">✦</span>
+          <div>
+            <small>DESTINO CONTROL CENTRE</small>
+            <strong>Journey management</strong>
+          </div>
         </div>
 
-        <div class="stat-card">
-          <h3>Confirmed</h3>
-          <p id="confirmedEnquiries">0</p>
-        </div>
-
-        <div class="stat-card">
-          <h3>Completed</h3>
-          <p id="completedEnquiries">0</p>
-        </div>
       </section>
 
+
+      <!-- STATISTICS -->
+      <section class="stats">
+
+        <div class="stat-card stat-total">
+          <div class="stat-card-top">
+            <span class="stat-label">TOTAL ENQUIRIES</span>
+            <span class="stat-symbol">↗</span>
+          </div>
+
+          <p id="totalEnquiries">0</p>
+          <small>All customer enquiries</small>
+        </div>
+
+        <div class="stat-card stat-new">
+          <div class="stat-card-top">
+            <span class="stat-label">NEW ENQUIRIES</span>
+            <span class="stat-symbol">✦</span>
+          </div>
+
+          <p id="newEnquiries">0</p>
+          <small>Awaiting attention</small>
+        </div>
+
+        <div class="stat-card stat-confirmed">
+          <div class="stat-card-top">
+            <span class="stat-label">CONFIRMED</span>
+            <span class="stat-symbol">✓</span>
+          </div>
+
+          <p id="confirmedEnquiries">0</p>
+          <small>Confirmed journeys</small>
+        </div>
+
+        <div class="stat-card stat-completed">
+          <div class="stat-card-top">
+            <span class="stat-label">COMPLETED</span>
+            <span class="stat-symbol">✧</span>
+          </div>
+
+          <p id="completedEnquiries">0</p>
+          <small>Successfully completed</small>
+        </div>
+
+      </section>
+
+
+      <!-- CUSTOMER ENQUIRY MANAGEMENT -->
       <section class="enquiries">
-        <h2>Customer Enquiries</h2>
-        <p id="dataMessage">Loading enquiries...</p>
 
-        <div class="search-area">
-          <label for="enquirySearch">Search enquiries</label>
-          <input
-            type="search"
-            id="enquirySearch"
-            placeholder="Search by booking ID, name, phone, email or service..."
-          >
+        <div class="enquiries-heading">
+          <div>
+            <span class="admin-eyebrow">CUSTOMER MANAGEMENT</span>
+            <h2>Journey enquiries</h2>
+            <p>Review and manage all incoming customer requests.</p>
+          </div>
+
+          <div class="enquiry-heading-mark">
+            <span>V</span>
+          </div>
         </div>
 
-        <div class="export-area">
-          <button type="button" id="exportButton">
-            Download Excel Report
-          </button>
+
+        <!-- SEARCH AND EXPORT -->
+        <div class="enquiry-toolbar">
+
+          <div class="search-area">
+            <label for="enquirySearch">Search enquiries</label>
+
+            <div class="search-input-wrap">
+              <span aria-hidden="true">⌕</span>
+
+              <input
+                type="search"
+                id="enquirySearch"
+                placeholder="Search booking ID, name, phone, email or service..."
+                autocomplete="off"
+              >
+            </div>
+          </div>
+
+          <div class="export-area">
+            <button type="button" id="exportButton">
+              <span aria-hidden="true">↓</span>
+              Download Excel Report
+            </button>
+          </div>
+
         </div>
 
+
+        <!-- DATA STATUS -->
+        <div class="data-status">
+          <span class="data-status-dot"></span>
+          <p id="dataMessage" role="status" aria-live="polite">
+            Loading enquiries...
+          </p>
+        </div>
+
+
+        <!-- ENQUIRY TABLE -->
         <div class="table-wrapper">
+
           <table>
             <thead>
               <tr>
@@ -108,9 +279,30 @@
 
             <tbody id="enquiriesTable"></tbody>
           </table>
+
         </div>
+
+        <div class="table-footer">
+          <span>DESTINO / CUSTOMER RECORDS</span>
+          <span>CONFIDENTIAL ADMINISTRATIVE INFORMATION</span>
+        </div>
+
       </section>
+
+
+      <!-- DASHBOARD FOOTER -->
+      <footer class="admin-footer">
+        <a href="#" class="admin-footer-brand">
+          <span class="brand-mark">V</span>
+          DESTINO
+        </a>
+
+        <span>Every journey deserves care.</span>
+        <span>Administration portal</span>
+      </footer>
+
     </main>
+
   </div>
 
 </body>
