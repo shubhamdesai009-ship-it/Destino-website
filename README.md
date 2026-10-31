@@ -30,6 +30,8 @@ Open `index.html` in a browser.
 5. Test the site on mobile and desktop, then submit a test enquiry and confirm it arrives at the recipient inbox.
 
 ## Brand notes
+The floating WhatsApp button is fixed above page content on desktop and mobile and links to +91 7709082055.
+
 The website uses a dark navy, warm ivory and soft green palette with a calm, premium editorial style. The current copy positions Destino as a journey coordination service rather than claiming to be a transport operator or aggregator.
 
 
