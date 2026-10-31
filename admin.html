@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DESTINO | Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js" defer></script>
+</head>
+<body>
+
+  <div class="login-container" id="loginSection">
+    <div class="login-card">
+      <h1>DESTINO</h1>
+      <p>Admin Dashboard</p>
+
+      <form id="loginForm">
+        <label>Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter admin email"
+          required
+        >
+
+        <label>Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter password"
+          required
+        >
+
+        <button type="submit">Login</button>
+        <p id="loginMessage"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboardSection" hidden>
+    <header class="topbar">
+      <h2>DESTINO Admin</h2>
+      <button id="logoutButton">Logout</button>
+    </header>
+
+    <main class="dashboard">
+      <h1>Dashboard Overview</h1>
+      <p>Manage your customer enquiries and bookings.</p>
+
+      <section class="stats">
+        <div class="stat-card">
+          <h3>Total Enquiries</h3>
+          <p id="totalEnquiries">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>New Enquiries</h3>
+          <p id="newEnquiries">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Confirmed</h3>
+          <p id="confirmedEnquiries">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Completed</h3>
+          <p id="completedEnquiries">0</p>
+        </div>
+      </section>
+
+      <section class="enquiries">
+        <h2>Customer Enquiries</h2>
+        <p id="dataMessage">Loading enquiries...</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Service</th>
+                <th>Journey Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="enquiriesTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+</body>
+</html>
