@@ -183,6 +183,24 @@ button:hover {
   font-size: 15px;
 }
 
+/* Excel export button */
+.export-area {
+  margin: 15px 0 25px;
+}
+
+#exportButton {
+  background: #51358c;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+#exportButton:hover {
+  background: #382364;
+}
+
 /* Enquiries table */
 .table-wrapper {
   width: 100%;
