@@ -27,7 +27,7 @@ document.getElementById('journeyForm')?.addEventListener('submit', async event =
   const submitButton = form.querySelector('button[type="submit"]');
 
   const formData = new FormData(form);
-  formData.set('_subject', `New Destion enquiry — ${formData.get('service')}`);
+  formData.set('_subject', `New Destino enquiry — ${formData.get('service')}`);
   if (formData.get('email')) formData.set('_replyto', formData.get('email'));
 
   submitButton.disabled = true;
