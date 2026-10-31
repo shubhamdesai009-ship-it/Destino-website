@@ -3,27 +3,101 @@
 @media(max-width:680px){.container{width:min(100% - 36px,520px)}.site-header{height:70px;padding:0 18px}.menu-toggle{display:block}.nav{display:none;position:absolute;top:70px;left:0;right:0;background:#101b2a;padding:20px;flex-direction:column;align-items:stretch;gap:20px;border-top:1px solid #ffffff22}.nav.open{display:flex}.nav .nav-cta{text-align:center}.hero{padding:65px 0 24px;min-height:auto}.hero-grid{grid-template-columns:1fr}.hero h1{font-size:48px}.hero-text{font-size:13px}.hero-note{margin-top:35px}.hero-visual{height:370px;margin-top:20px}.visual-orbit{width:330px;height:330px}.orbit-two{width:270px;height:270px}.tag-top{right:-2px;top:30px}.tag-bottom{left:0;bottom:28px}.visual-stamp{right:4px}.hero-bottom{font-size:7px;margin-top:25px}.trust-inner{min-height:65px;flex-wrap:wrap;justify-content:center;gap:12px 17px}.trust-inner b{font-size:10px}.trust-inner i{display:none}.section,.dark-section{padding:75px 0}.section-heading{display:block;margin-bottom:30px}.section-heading>p{margin-top:22px}.section h2,.dark-section h2,.partner-section h2{font-size:40px}.service-grid{grid-template-columns:1fr}.service-card{min-height:250px}.service-icon{margin:18px 0 12px}.steps{grid-template-columns:1fr 1fr;row-gap:30px;margin-top:40px}.step{padding:18px 15px 0 0}.step+.step{padding-left:15px}.step:nth-child(3){border-left:0;padding-left:0}.step-icon{margin:18px 0 12px}.difference-grid,.partner-grid,.contact-grid{grid-template-columns:1fr;gap:40px}.difference-art{height:300px}.big-v{font-size:230px}.difference-copy h2,.contact-copy h2{font-size:42px}.principles{gap:15px;flex-wrap:wrap}.partner-section{padding:75px 0}.contact-form{padding:25px 20px}.form-row{grid-template-columns:1fr;gap:0}.footer-top{gap:15px;flex-wrap:wrap}.footer-top p{order:3;width:100%;margin:0}.footer-bottom{gap:12px;flex-direction:column}.footer-bottom span:nth-child(2){display:none}}
 
 
-/* DESTINO WhatsApp contact */
-.whatsapp-float{position:fixed;right:22px;bottom:22px;z-index:1000;display:inline-flex;align-items:center;gap:9px;padding:13px 18px;border-radius:999px;background:#25D366;color:#073b20;font:700 12px Manrope,sans-serif;box-shadow:0 8px 24px #10251b35;transition:transform .2s,box-shadow .2s}
-.whatsapp-float:hover{transform:translateY(-3px);box-shadow:0 12px 28px #10251b45}
-.whatsapp-symbol{display:grid;place-items:center;width:20px;height:20px;border:2px solid currentColor;border-radius:50%;font-size:12px;line-height:1}
-.button-whatsapp{background:#25D366;color:#073b20;margin-top:22px}
-.button-whatsapp:hover{background:#55df86;transform:translateY(-2px)}
-@media(max-width:680px){.whatsapp-float{right:14px;bottom:14px;padding:12px 15px}}
 
-/* DESTINO email contact */
-.contact-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.contact-actions .button{margin-top:22px}
-.button-email{background:#e8eddf;color:#233047}
-.button-email:hover{background:#d9e4c8;transform:translateY(-2px)}
-.email-float{position:fixed;right:22px;bottom:82px;z-index:1000;display:inline-flex;align-items:center;gap:9px;padding:13px 18px;border-radius:999px;background:#f4f5ef;color:#172536;border:1px solid #dfe2df;font:700 12px Manrope,sans-serif;box-shadow:0 8px 24px #10251b25;transition:transform .2s,box-shadow .2s}
-.email-float:hover{transform:translateY(-3px);box-shadow:0 12px 28px #10251b35}
-.email-float>span:first-child{font-size:17px;line-height:1}
-@media(max-width:680px){.email-float{right:14px;bottom:75px;padding:12px 15px}.contact-actions{align-items:stretch;flex-direction:column}.contact-actions .button{width:100%}}
+/* DESTINO floating contact buttons */
+.whatsapp-float,
+.email-float {
+  position: fixed;
+  right: 20px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 18px;
+  border-radius: 999px;
+  font: 700 12px Manrope, Arial, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 8px 24px #10251b35;
+  transition: transform .2s, box-shadow .2s;
+}
 
+.whatsapp-float {
+  bottom: 20px;
+  background: #25D366;
+  color: #073b20;
+}
 
-/* High-visibility floating WhatsApp contact button (desktop and mobile). */
-.whatsapp-float{position:fixed!important;right:20px!important;bottom:20px!important;z-index:2147483000!important;display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:center!important;gap:10px!important;min-height:52px!important;padding:13px 19px!important;border:2px solid #ffffff!important;border-radius:999px!important;background:#20c766!important;color:#062b17!important;font:800 13px/1.2 Manrope,Arial,sans-serif!important;text-decoration:none!important;box-shadow:0 5px 22px #0005!important;pointer-events:auto!important}
-.whatsapp-float:hover,.whatsapp-float:focus-visible{transform:translateY(-2px);background:#35dc7a!important;outline:3px solid #ffffff!important;outline-offset:2px}
-.whatsapp-icon{display:block!important;width:22px!important;height:22px!important;fill:currentColor!important;flex:0 0 22px!important}
-@media(max-width:680px){.whatsapp-float{right:12px!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;min-height:50px!important;padding:12px 16px!important;font-size:12px!important}}
+.email-float {
+  bottom: 82px;
+  background: #f4f5ef;
+  color: #172536;
+  border: 1px solid #dfe2df;
+}
+
+.whatsapp-float:hover,
+.email-float:hover {
+  transform: translateY(-3px);
+}
+
+.whatsapp-icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+  flex: 0 0 22px;
+}
+
+.email-float > span:first-child {
+  font-size: 17px;
+}
+
+.button-whatsapp {
+  background: #25D366;
+  color: #073b20;
+}
+
+.button-email {
+  background: #e8eddf;
+  color: #233047;
+}
+
+.button-whatsapp,
+.button-email {
+  margin-top: 22px;
+}
+
+.button-whatsapp:hover,
+.button-email:hover {
+  transform: translateY(-2px);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 680px) {
+  .whatsapp-float,
+  .email-float {
+    right: 14px;
+    padding: 12px 15px;
+  }
+
+  .whatsapp-float {
+    bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+
+  .email-float {
+    bottom: calc(75px + env(safe-area-inset-bottom));
+  }
+
+  .contact-actions {
+    flex-direction: column;
+  }
+
+  .contact-actions .button {
+    width: 100%;
+  }
+}
