@@ -1994,3 +1994,153 @@ textarea:focus-visible {
     will-change: auto;
   }
 }
+
+/* =========================================================
+   DESTINO — CINEMATIC SECTION TRANSITIONS
+   Append below all existing CSS
+   ========================================================= */
+
+.cinematic-panel {
+  position: relative;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition:
+    opacity 1s cubic-bezier(.2,.7,.2,1),
+    transform 1.1s cubic-bezier(.2,.7,.2,1),
+    filter 1s ease;
+}
+
+.cinematic-panel.cinema-before {
+  opacity: .55;
+  transform: perspective(1400px) translateY(55px) scale(.965) rotateX(2deg);
+  filter: blur(3px);
+}
+
+.cinematic-panel.cinema-visible {
+  opacity: 1;
+  transform: perspective(1400px) translateY(0) scale(1) rotateX(0);
+  filter: blur(0);
+}
+
+/* Cinematic light sweep across section boundaries */
+.cinematic-panel .cinema-light {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.cinematic-panel .cinema-light::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -80%;
+  width: 45%;
+  height: 140%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(226,209,169,.13),
+    rgba(255,255,255,.22),
+    transparent
+  );
+  transform: skewX(-18deg);
+}
+
+.cinematic-panel.cinema-sweep .cinema-light {
+  opacity: 1;
+}
+
+.cinematic-panel.cinema-sweep .cinema-light::after {
+  animation: destinoLightSweep 1.25s cubic-bezier(.2,.7,.2,1) both;
+}
+
+@keyframes destinoLightSweep {
+  from { left: -80%; }
+  to { left: 140%; }
+}
+
+/* Full-screen visual depth at section entrances */
+.hero.cinematic-panel,
+.dark-section.cinematic-panel,
+.partner-section.cinematic-panel {
+  transform-origin: center center;
+}
+
+.section.cinematic-panel {
+  transform-origin: 50% 40%;
+}
+
+/* Elegant section divider */
+.section.cinematic-panel::marker {
+  content: "";
+}
+
+/* Dramatic heading entrance */
+.cinematic-panel.cinema-visible .eyebrow,
+.cinematic-panel.cinema-visible h2 {
+  animation: destinoHeadingIn .9s cubic-bezier(.2,.7,.2,1) both;
+}
+
+.cinematic-panel.cinema-visible h2 {
+  animation-delay: .12s;
+}
+
+@keyframes destinoHeadingIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    letter-spacing: -.02em;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark and partner panels gain a subtle illuminated edge */
+.dark-section.cinematic-panel.cinema-visible,
+.partner-section.cinematic-panel.cinema-visible {
+  box-shadow:
+    inset 0 1px rgba(226,209,169,.15),
+    inset 0 -1px rgba(226,209,169,.12);
+}
+
+/* Section transitions stay subtle on smaller screens */
+@media (max-width: 680px) {
+  .cinematic-panel.cinema-before {
+    transform: translateY(28px) scale(.985);
+    filter: none;
+  }
+
+  .cinematic-panel.cinema-visible {
+    transform: translateY(0) scale(1);
+  }
+
+  .cinematic-panel .cinema-light {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-panel,
+  .cinematic-panel.cinema-before,
+  .cinematic-panel.cinema-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  .cinematic-panel .cinema-light {
+    display: none;
+  }
+
+  .cinematic-panel.cinema-visible .eyebrow,
+  .cinematic-panel.cinema-visible h2 {
+    animation: none;
+  }
+}
