@@ -171,10 +171,10 @@ journeyForm?.addEventListener('submit', async event => {
   }
 });
 
-/* =========================================================
-   DESTINO — SCROLL-DRIVEN 3D MOTION
-   Add below the existing script.js code
-   ========================================================= */
+
+// ==========================================
+// DESTINO — SCROLL-DRIVEN 3D MOTION
+// ==========================================
 
 (() => {
   const initDestinoMotion = () => {
@@ -184,7 +184,7 @@ journeyForm?.addEventListener('submit', async event => {
 
     if (reduceMotion) return;
 
-    /* Add decorative depth orbs */
+    // Add decorative depth orbs
     document.querySelectorAll(
       ".hero, .dark-section, .partner-section"
     ).forEach(section => {
@@ -196,7 +196,7 @@ journeyForm?.addEventListener('submit', async event => {
       }
     });
 
-    /* Elements that reveal as visitors scroll */
+    // Elements that reveal as visitors scroll
     const revealElements = document.querySelectorAll(
       ".service-card, .step, .difference-art, " +
       ".difference-copy, .contact-form, " +
@@ -208,7 +208,10 @@ journeyForm?.addEventListener('submit', async event => {
         entries => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
-              entry.target.classList.add("destino-reveal", "is-visible");
+              entry.target.classList.add(
+                "destino-reveal",
+                "is-visible"
+              );
               revealObserver.unobserve(entry.target);
             }
           });
@@ -222,13 +225,15 @@ journeyForm?.addEventListener('submit', async event => {
       });
     }
 
-    /* Scroll-driven 3D depth */
+    // Scroll-driven 3D depth
     const hero = document.querySelector(".hero-visual");
     const art = document.querySelector(".difference-art");
     const cards = [...document.querySelectorAll(".service-card")];
     const steps = [...document.querySelectorAll(".step")];
     const form = document.querySelector(".contact-form");
-    const partnerRows = [...document.querySelectorAll(".partner-list > div")];
+    const partnerRows = [
+      ...document.querySelectorAll(".partner-list > div")
+    ];
     const orbs = [...document.querySelectorAll(".scroll-orb")];
 
     let ticking = false;
@@ -239,7 +244,11 @@ journeyForm?.addEventListener('submit', async event => {
       const progressFor = element => {
         const rect = element.getBoundingClientRect();
         const center = rect.top + rect.height / 2;
-        return Math.max(-1, Math.min(1, (center - height / 2) / (height / 2)));
+
+        return Math.max(
+          -1,
+          Math.min(1, (center - height / 2) / (height / 2))
+        );
       };
 
       if (hero) {
@@ -258,13 +267,25 @@ journeyForm?.addEventListener('submit', async event => {
       cards.forEach((card, index) => {
         const p = progressFor(card);
         const stagger = index % 2 === 0 ? 1 : -1;
-        card.style.setProperty("--scroll-lift", `${-p * 12}px`);
-        card.style.setProperty("--scroll-tilt", `${p * stagger * 1.3}deg`);
+
+        card.style.setProperty(
+          "--scroll-lift",
+          `${-p * 12}px`
+        );
+
+        card.style.setProperty(
+          "--scroll-tilt",
+          `${p * stagger * 1.3}deg`
+        );
       });
 
       steps.forEach((step, index) => {
         const p = progressFor(step);
-        step.style.setProperty("--step-depth", `${-p * (7 + index * 2)}px`);
+
+        step.style.setProperty(
+          "--step-depth",
+          `${-p * (7 + index * 2)}px`
+        );
       });
 
       if (form) {
@@ -275,14 +296,22 @@ journeyForm?.addEventListener('submit', async event => {
 
       partnerRows.forEach(row => {
         const p = progressFor(row);
-        row.style.setProperty("--partner-depth", `${-p * 8}px`);
+
+        row.style.setProperty(
+          "--partner-depth",
+          `${-p * 8}px`
+        );
       });
 
       orbs.forEach((orb, index) => {
         const section = orb.parentElement;
         const p = progressFor(section);
         const direction = index % 2 === 0 ? 1 : -1;
-        orb.style.setProperty("--orb-y", `${p * direction * 55}px`);
+
+        orb.style.setProperty(
+          "--orb-y",
+          `${p * direction * 55}px`
+        );
       });
 
       ticking = false;
@@ -295,9 +324,11 @@ journeyForm?.addEventListener('submit', async event => {
       }
     };
 
-    window.addEventListener("scroll", requestMotionUpdate, {
-      passive: true
-    });
+    window.addEventListener(
+      "scroll",
+      requestMotionUpdate,
+      { passive: true }
+    );
 
     window.addEventListener("resize", requestMotionUpdate);
 
@@ -305,10 +336,103 @@ journeyForm?.addEventListener('submit', async event => {
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initDestinoMotion, {
-      once: true
-    });
+    document.addEventListener(
+      "DOMContentLoaded",
+      initDestinoMotion,
+      { once: true }
+    );
   } else {
     initDestinoMotion();
+  }
+})();
+
+
+// ==========================================
+// DESTINO — CINEMATIC SECTION TRANSITIONS
+// ==========================================
+
+(() => {
+  const startCinematicTransitions = () => {
+    if (
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+    ) {
+      return;
+    }
+
+    const selectors = [
+      ".hero",
+      ".trust-strip",
+      ".section",
+      ".dark-section",
+      ".partner-section",
+      ".footer"
+    ];
+
+    const panels = [
+      ...document.querySelectorAll(selectors.join(","))
+    ];
+
+    if (
+      !panels.length ||
+      !("IntersectionObserver" in window)
+    ) {
+      return;
+    }
+
+    panels.forEach(panel => {
+      panel.classList.add(
+        "cinematic-panel",
+        "cinema-before"
+      );
+
+      if (!panel.querySelector(":scope > .cinema-light")) {
+        const light = document.createElement("div");
+
+        light.className = "cinema-light";
+        light.setAttribute("aria-hidden", "true");
+
+        panel.appendChild(light);
+      }
+    });
+
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          const panel = entry.target;
+
+          panel.classList.remove("cinema-before");
+          panel.classList.add(
+            "cinema-visible",
+            "cinema-sweep"
+          );
+
+          window.setTimeout(() => {
+            panel.classList.remove("cinema-sweep");
+          }, 1400);
+
+          observer.unobserve(panel);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px"
+      }
+    );
+
+    panels.forEach(panel => observer.observe(panel));
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      startCinematicTransitions,
+      { once: true }
+    );
+  } else {
+    startCinematicTransitions();
   }
 })();
