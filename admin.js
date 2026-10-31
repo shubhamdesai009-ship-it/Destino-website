@@ -84,7 +84,6 @@ async function loadEnquiries() {
 
   allEnquiries = data || [];
 
-  // Update dashboard statistics
   document.getElementById("totalEnquiries").textContent =
     allEnquiries.length;
 
@@ -124,10 +123,17 @@ function createWhatsAppButton(item) {
     const customerName = item.customer_name || "Customer";
     const serviceName = item.service || "your journey";
 
-    const message =
+    let message =
       `Hello ${customerName}, thank you for contacting DESTINO. ` +
       `We received your enquiry for ${serviceName}. ` +
       `Our team would be happy to assist you.`;
+
+    if (item.status === "Confirmed" && item.booking_id) {
+      message =
+        `Hello ${customerName}, your journey with DESTINO is confirmed! ` +
+        `Your Booking ID is ${item.booking_id}. ` +
+        `Thank you for choosing DESTINO.`;
+    }
 
     const whatsappURL =
       "https://wa.me/" + whatsappNumber +
@@ -147,6 +153,7 @@ function renderEnquiries() {
 
   const filteredEnquiries = allEnquiries.filter(item => {
     const searchableText = [
+      item.booking_id,
       item.customer_name,
       item.phone,
       item.email,
@@ -170,7 +177,7 @@ function renderEnquiries() {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
 
-    cell.colSpan = 8;
+    cell.colSpan = 9;
     cell.textContent = "No matching enquiries found.";
     row.appendChild(cell);
     enquiriesTable.appendChild(row);
@@ -179,6 +186,11 @@ function renderEnquiries() {
 
   filteredEnquiries.forEach(item => {
     const row = document.createElement("tr");
+
+    // Booking ID
+    const bookingCell = document.createElement("td");
+    bookingCell.textContent = item.booking_id || "-";
+    row.appendChild(bookingCell);
 
     const receivedDate = item.created_at
       ? new Date(item.created_at).toLocaleString("en-IN")
@@ -240,6 +252,7 @@ function renderEnquiries() {
       }
 
       await loadEnquiries();
+
       dataMessage.textContent =
         "Enquiry status updated successfully.";
     });
@@ -247,7 +260,7 @@ function renderEnquiries() {
     statusCell.appendChild(statusSelect);
     row.appendChild(statusCell);
 
-    // WhatsApp contact column
+    // WhatsApp contact
     const whatsappCell = document.createElement("td");
     whatsappCell.appendChild(createWhatsAppButton(item));
     row.appendChild(whatsappCell);
@@ -264,6 +277,7 @@ function exportEnquiries() {
   }
 
   const headers = [
+    "Booking ID",
     "Customer Name",
     "Phone",
     "Email",
@@ -276,7 +290,6 @@ function exportEnquiries() {
     "Received Date"
   ];
 
-  // Escape CSV values and prevent spreadsheet formula injection
   function escapeCSV(value) {
     let text = String(value ?? "");
 
@@ -288,6 +301,7 @@ function exportEnquiries() {
   }
 
   const rows = allEnquiries.map(item => [
+    item.booking_id,
     item.customer_name,
     item.phone,
     item.email,
@@ -317,7 +331,7 @@ function exportEnquiries() {
 
   link.href = url;
   link.download =
-    "DESTINO_Customer_Enquiries_" +
+    "DESTINO_Booking_Report_" +
     new Date().toISOString().slice(0, 10) + ".csv";
 
   document.body.appendChild(link);
