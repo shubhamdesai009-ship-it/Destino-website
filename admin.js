@@ -16,6 +16,7 @@ const logoutButton = document.getElementById("logoutButton");
 const searchInput = document.getElementById("enquirySearch");
 const enquiriesTable = document.getElementById("enquiriesTable");
 const dataMessage = document.getElementById("dataMessage");
+const exportButton = document.getElementById("exportButton");
 
 const STATUS_OPTIONS = [
   "New",
@@ -254,6 +255,80 @@ function renderEnquiries() {
     enquiriesTable.appendChild(row);
   });
 }
+
+// Export all enquiries to Excel-compatible CSV
+function exportEnquiries() {
+  if (!allEnquiries || allEnquiries.length === 0) {
+    alert("No customer enquiries available to export.");
+    return;
+  }
+
+  const headers = [
+    "Customer Name",
+    "Phone",
+    "Email",
+    "Service",
+    "Journey Date",
+    "Pickup Location",
+    "Drop Location",
+    "Message",
+    "Status",
+    "Received Date"
+  ];
+
+  // Escape CSV values and prevent spreadsheet formula injection
+  function escapeCSV(value) {
+    let text = String(value ?? "");
+
+    if (/^[\s]*[=+\-@]/.test(text)) {
+      text = "'" + text;
+    }
+
+    return '"' + text.replace(/"/g, '""') + '"';
+  }
+
+  const rows = allEnquiries.map(item => [
+    item.customer_name,
+    item.phone,
+    item.email,
+    item.service,
+    item.journey_date,
+    item.pickup_location,
+    item.drop_location,
+    item.message,
+    item.status,
+    item.created_at
+      ? new Date(item.created_at).toLocaleString("en-IN")
+      : ""
+  ]);
+
+  const csvContent = [
+    headers.map(escapeCSV).join(","),
+    ...rows.map(row => row.map(escapeCSV).join(","))
+  ].join("\r\n");
+
+  const blob = new Blob(
+    ["\uFEFF" + csvContent],
+    { type: "text/csv;charset=utf-8;" }
+  );
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download =
+    "DESTINO_Customer_Enquiries_" +
+    new Date().toISOString().slice(0, 10) + ".csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+// Excel export button
+exportButton?.addEventListener("click", exportEnquiries);
 
 // Search as the admin types
 searchInput?.addEventListener("input", renderEnquiries);
