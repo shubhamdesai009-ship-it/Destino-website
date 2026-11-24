@@ -1,5 +1,5 @@
 
-// DESTINO Supabase connection
+// VIAREN Supabase connection
 const SUPABASE_URL = "https://mxaragmabvmplinhvxae.supabase.co";
 const SUPABASE_KEY = "sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixRr7jz0";
 
@@ -124,15 +124,15 @@ function createWhatsAppButton(item) {
     const serviceName = item.service || "your journey";
 
     let message =
-      `Hello ${customerName}, thank you for contacting DESTINO. ` +
+      `Hello ${customerName}, thank you for contacting VIAREN. ` +
       `We received your enquiry for ${serviceName}. ` +
       `Our team would be happy to assist you.`;
 
     if (item.status === "Confirmed" && item.booking_id) {
       message =
-        `Hello ${customerName}, your journey with DESTINO is confirmed! ` +
+        `Hello ${customerName}, your journey with VIAREN is confirmed! ` +
         `Your Booking ID is ${item.booking_id}. ` +
-        `Thank you for choosing DESTINO.`;
+        `Thank you for choosing VIAREN.`;
     }
 
     const whatsappURL =
@@ -331,7 +331,7 @@ function exportEnquiries() {
 
   link.href = url;
   link.download =
-    "DESTINO_Booking_Report_" +
+    "VIAREN_Booking_Report_" +
     new Date().toISOString().slice(0, 10) + ".csv";
 
   document.body.appendChild(link);
