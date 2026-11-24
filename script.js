@@ -5,7 +5,7 @@
 
 // Supabase configuration — existing project
 const SUPABASE_URL = 'https://mxaragmabvmplinhvxae.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixR7jz0';
+const SUPABASE_KEY = 'sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixRr7jz0';
 
 // Initialise Supabase safely
 let supabaseClient = null;
