@@ -1,6 +1,6 @@
 
 /* =========================================================
-   DESTINO — CINEMATIC BRITISH LUXURY DESIGN SYSTEM
+   VIAREN — CINEMATIC BRITISH LUXURY DESIGN SYSTEM
    Complete replacement stylesheet
    ========================================================= */
 
@@ -204,7 +204,7 @@ button {
 }
 
 .hero::after {
-  content: "D";
+  content: "V";
   position: absolute;
   right: -25px;
   bottom: -210px;
@@ -1792,8 +1792,7 @@ textarea:focus-visible {
 }
 
 /* =========================================================
-   DESTINO — ADVANCED 3D SCROLL EXPERIENCE
-   Append this below the existing stylesheet
+   VIAREN — ADVANCED 3D SCROLL EXPERIENCE
    ========================================================= */
 
 /* Smooth depth transitions */
@@ -1996,8 +1995,7 @@ textarea:focus-visible {
 }
 
 /* =========================================================
-   DESTINO — CINEMATIC SECTION TRANSITIONS
-   Append below all existing CSS
+   VIAREN — CINEMATIC SECTION TRANSITIONS
    ========================================================= */
 
 .cinematic-panel {
@@ -2146,7 +2144,7 @@ textarea:focus-visible {
 }
 
 /* =========================================================
-   DESTINO — PINNED 3D CINEMATIC SERVICE SHOWCASE
+   VIAREN — PINNED 3D CINEMATIC SERVICE SHOWCASE
    Four immersive scenes controlled by scroll position
    ========================================================= */
 
@@ -2213,7 +2211,7 @@ textarea:focus-visible {
 }
 
 .showcase-sticky::after {
-  content: "DESTINO";
+  content: "VIAREN";
   position: absolute;
   right: -35px;
   bottom: -110px;
