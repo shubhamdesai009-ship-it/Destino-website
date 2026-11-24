@@ -754,6 +754,13 @@
             placeholder="Date, pickup area, destination and any support needed..."
           ></textarea>
 
+          <!-- CLOUDFLARE TURNSTILE SECURITY CHECK -->
+          <div
+            class="cf-turnstile"
+            data-sitekey="0x4AAAAAAGQfCHewVPOU1Awl"
+            data-theme="light"
+          ></div>
+
           <button class="button button-primary submit-button" type="submit">
             Send enquiry <span>↗</span>
           </button>
@@ -819,6 +826,9 @@
     </svg>
     <span>WhatsApp</span>
   </a>
+
+  <!-- CLOUDFLARE TURNSTILE API -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <!-- EXISTING SUPABASE CONNECTION -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
