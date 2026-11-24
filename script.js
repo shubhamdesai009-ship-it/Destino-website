@@ -1,11 +1,11 @@
 
 // ==========================================
-// DESTINO WEBSITE — MAIN INTERACTIONS
+// VIAREN WEBSITE — MAIN INTERACTIONS
 // ==========================================
 
 // Supabase configuration — existing project
 const SUPABASE_URL = 'https://mxaragmabvmplinhvxae.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixRr7jz0';
+const SUPABASE_KEY = 'sb_publishable_kdlKPQ_H1i88A_qD4T5znA_ixR7jz0';
 
 // Initialise Supabase safely
 let supabaseClient = null;
@@ -16,7 +16,7 @@ if (window.supabase?.createClient) {
     SUPABASE_KEY
   );
 } else {
-  console.error('DESTINO: Supabase library could not be loaded.');
+  console.error('VIAREN: Supabase library could not be loaded.');
 }
 
 
@@ -147,15 +147,15 @@ journeyForm?.addEventListener('submit', async event => {
     form.reset();
 
     status.textContent =
-      'Thank you! Your enquiry has been received. The DESTINO team will contact you soon.';
+      'Thank you! Your enquiry has been received. The VIAREN team will contact you soon.';
 
     status.style.color = '#54752c';
 
   } catch (error) {
-    console.error('DESTINO enquiry submission error:', error);
+    console.error('VIAREN enquiry submission error:', error);
 
     status.textContent =
-      'We could not send your enquiry. Please try again or contact DESTINO on WhatsApp.';
+      'We could not send your enquiry. Please try again or contact VIAREN on WhatsApp.';
 
     status.style.color = '#a33b32';
 
@@ -167,7 +167,7 @@ journeyForm?.addEventListener('submit', async event => {
 
 
 // ==========================================
-// DESTINO — SCROLL-DRIVEN 3D MOTION
+// VIAREN — SCROLL-DRIVEN 3D MOTION
 // ==========================================
 
 (() => {
@@ -334,7 +334,7 @@ journeyForm?.addEventListener('submit', async event => {
 
 
 // ==========================================
-// DESTINO — CINEMATIC SECTION TRANSITIONS
+// VIAREN — CINEMATIC SECTION TRANSITIONS
 // ==========================================
 
 (() => {
@@ -425,7 +425,7 @@ journeyForm?.addEventListener('submit', async event => {
 
 
 // ==========================================
-// DESTINO — PINNED 3D CINEMATIC SHOWCASE
+// VIAREN — PINNED 3D CINEMATIC SHOWCASE
 // ==========================================
 
 (() => {
@@ -433,7 +433,7 @@ journeyForm?.addEventListener('submit', async event => {
     const showcase = document.getElementById('destinoShowcase');
 
     if (!showcase) {
-      console.info('DESTINO: Pinned showcase not found.');
+      console.info('VIAREN: Pinned showcase not found.');
       return;
     }
 
