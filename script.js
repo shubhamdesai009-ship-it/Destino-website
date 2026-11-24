@@ -84,7 +84,8 @@ document.querySelectorAll('[data-service]').forEach(link => {
 
 
 // ==========================================
-// CUSTOMER ENQUIRY — SUPABASE
+// CUSTOMER ENQUIRY — EDGE FUNCTION
+// CLOUDFLARE TURNSTILE PROTECTION
 // ==========================================
 
 const journeyForm = document.getElementById('journeyForm');
@@ -100,6 +101,7 @@ journeyForm?.addEventListener('submit', async event => {
 
   if (submitButton.disabled) return;
 
+  // Check Supabase connection
   if (!supabaseClient) {
     status.textContent =
       'Our enquiry service is temporarily unavailable. Please contact us on WhatsApp.';
@@ -109,18 +111,18 @@ journeyForm?.addEventListener('submit', async event => {
 
   const formData = new FormData(form);
 
-  // Existing database field mapping — DO NOT CHANGE
+  // Read existing form fields
   const enquiry = {
-    customer_name: String(formData.get('name') || '').trim(),
+    name: String(formData.get('name') || '').trim(),
     phone: String(formData.get('phone') || '').trim(),
-    email: String(formData.get('email') || '').trim() || null,
+    email: String(formData.get('email') || '').trim(),
     service: String(formData.get('service') || '').trim(),
-    message: String(formData.get('message') || '').trim() || null,
-    status: 'New'
+    message: String(formData.get('message') || '').trim()
   };
 
+  // Basic required-field validation
   if (
-    !enquiry.customer_name ||
+    !enquiry.name ||
     !enquiry.phone ||
     !enquiry.service
   ) {
@@ -130,20 +132,52 @@ journeyForm?.addEventListener('submit', async event => {
     return;
   }
 
+  // Get Cloudflare Turnstile response token
+  const turnstileToken = String(
+    formData.get('cf-turnstile-response') || ''
+  ).trim();
+
+  if (!turnstileToken) {
+    status.textContent =
+      'Please complete the security verification before submitting.';
+    status.style.color = '#a33b32';
+    return;
+  }
+
   submitButton.disabled = true;
   submitButton.setAttribute('aria-busy', 'true');
-  status.textContent = 'Sending your enquiry...';
+
+  status.textContent = 'Verifying security and sending your enquiry...';
   status.style.color = '';
 
   try {
-    const { error } = await supabaseClient
-      .from('enquiries')
-      .insert([enquiry]);
+    // Send enquiry and Turnstile token to Supabase Edge Function.
+    // The Edge Function verifies Turnstile before inserting into the database.
+    const { data, error } = await supabaseClient.functions.invoke(
+      'submit-enquiry',
+      {
+        body: {
+          ...enquiry,
+          turnstileToken
+        }
+      }
+    );
 
     if (error) {
-      throw error;
+      console.error('VIAREN Edge Function error:', error);
+      throw new Error(
+        'We could not submit your enquiry. Please try again.'
+      );
     }
 
+    if (!data || data.success !== true) {
+      throw new Error(
+        data?.message ||
+        'We could not submit your enquiry. Please try again.'
+      );
+    }
+
+    // Successful submission
     form.reset();
 
     status.textContent =
@@ -155,11 +189,18 @@ journeyForm?.addEventListener('submit', async event => {
     console.error('VIAREN enquiry submission error:', error);
 
     status.textContent =
+      error.message ||
       'We could not send your enquiry. Please try again or contact VIAREN on WhatsApp.';
 
     status.style.color = '#a33b32';
 
   } finally {
+    // Turnstile tokens are single-use.
+    // Reset the widget so the customer can try again.
+    if (window.turnstile) {
+      window.turnstile.reset();
+    }
+
     submitButton.disabled = false;
     submitButton.removeAttribute('aria-busy');
   }
